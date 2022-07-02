@@ -3,6 +3,7 @@ import json
 from flask import Flask, url_for, render_template, redirect, session
 from auth.routes import blueprint_auth
 from report.routes import blueprint_report
+from access import login_required
 
 
 app = Flask(__name__)
@@ -16,11 +17,7 @@ app.config['access_config'] = json.load(open('configs/access.json'))
 
 
 @app.route('/')
-def start_point():
-    return redirect(url_for('blueprint_auth.start_auth'))
-
-
-@app.route('/menu')
+@login_required
 def menu_choice():
     if session.get('user_group', None):
         return render_template('internal_user_menu.html')
@@ -28,6 +25,7 @@ def menu_choice():
 
 
 @app.route('/exit')
+@login_required
 def exit_func():
     session.clear()
     return "До свиданья"
