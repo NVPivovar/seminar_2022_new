@@ -1,8 +1,8 @@
 import json
 
 from flask import Flask, url_for, render_template, redirect, session
-from blueprint_auth.routes import blueprint_auth
-from blueprint_report.routes import blueprint_report
+from auth.routes import blueprint_auth
+from report.routes import blueprint_report
 
 
 app = Flask(__name__)
