@@ -20,7 +20,7 @@ def start_point():
     return redirect(url_for('blueprint_auth.start_auth'))
 
 
-@app.route('/menu_choice')
+@app.route('/menu')
 def menu_choice():
     if session.get('user_group', None):
         return render_template('internal_user_menu.html')
