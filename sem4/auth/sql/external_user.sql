@@ -1,0 +1,1 @@
+select user_id, NULL from external_user where login ='$login' and password = '$password'
