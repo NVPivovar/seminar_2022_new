@@ -1,6 +1,6 @@
 import json
 
-from flask import Flask, url_for, render_template, redirect, session
+from flask import Flask, render_template, session
 from auth.routes import blueprint_auth
 from report.routes import blueprint_report
 from access import login_required
