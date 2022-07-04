@@ -1,0 +1,28 @@
+{% extends 'market/base.html' %}
+{% block index %}
+
+{% import 'market/components.html' as components %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-3" id="filters">
+            {{ components.render_filter() }}
+        </div>
+        <div class="col-md-7">
+            {% if not items %}
+            <center>
+                <h1>Нет товаров по вашим требованиям</h1>
+            </center>
+            {% else %}
+                {{ components.render_content(items=items) }}
+            {% endif %}
+        </div>
+        <div class="col-md-2">
+            <span>Ваша корзина: </span><span>{{ basket_count }}</span>
+            <div>
+                <a href="#">К оплате</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
