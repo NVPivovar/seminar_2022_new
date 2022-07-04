@@ -1,6 +1,6 @@
 import os
 
-from flask import Blueprint, render_template, request, current_app
+from flask import Blueprint, render_template, request, current_app, session
 
 from database.operations import select
 from database.sql_provider import SQLProvider
@@ -27,4 +27,10 @@ def market_index():
 		items = select(current_app.config['db_config'], sql)
 		return render_template('market/index.html', items=items)
 	else:
-		return 'Страница не найдена'
+		if 'basket' in session:
+			basket_count = session['basket']
+			basket_count += 1
+			session['basket'] = basket_count
+		else:
+			session['basket'] = 1
+		return str(session.get('basket', 0))

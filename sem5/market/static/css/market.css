@@ -17,15 +17,11 @@
     background-color: #00FF00;
 }
 
-.item-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-}
-
 .item {
     width: 200px;
     height: 180px;
     background-color: #A0A0A0;
     text-align: center;
     margin: 10px;
+    float: left;
 }

@@ -18,11 +18,12 @@
             {% endif %}
         </div>
         <div class="col-md-2">
-            <span>Ваша корзина: </span><span>{{ basket_count }}</span>
+            <span>Ваша корзина: </span><span id="basket-count"></span>
             <div>
                 <a href="#">К оплате</a>
             </div>
         </div>
     </div>
 </div>
+<script src="{{ url_for('blueprint_market.static', filename='js/basket.js') }}"></script>
 {% endblock %}
