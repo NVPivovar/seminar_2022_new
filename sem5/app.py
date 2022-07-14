@@ -5,7 +5,7 @@ from flask import Flask, render_template, session
 from auth.routes import blueprint_auth
 from report.routes import blueprint_report
 from market.routes import blueprint_market
-from access import login_required, group_required
+from access import login_required, group_required, external_required
 
 
 app = Flask(__name__)
@@ -31,7 +31,7 @@ def menu_choice():
 @login_required
 def exit_func():
     session.clear()
-    return "До свиданья"
+    return render_template('exit.html')
 
 
 def add_blueprint_access_handler(app: Flask, blueprint_names: List[str], handler: Callable) -> Flask:
@@ -46,5 +46,6 @@ def add_blueprint_access_handler(app: Flask, blueprint_names: List[str], handler
 
 
 if __name__ == '__main__':
-    app = add_blueprint_access_handler(app, ['report'], group_required)
+    app = add_blueprint_access_handler(app, ['blueprint_report'], group_required)
+    app = add_blueprint_access_handler(app, ['blueprint_market'], external_required)
     app.run(host='127.0.0.1', port=5001)

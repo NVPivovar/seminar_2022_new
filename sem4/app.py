@@ -28,7 +28,7 @@ def menu_choice():
 @login_required
 def exit_func():
     session.clear()
-    return "До свиданья"
+    return render_template('exit.html')
 
 
 if __name__ == '__main__':

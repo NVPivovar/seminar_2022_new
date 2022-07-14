@@ -1,6 +1,10 @@
 import os
 
-from flask import Blueprint, render_template, request, current_app, session
+from flask import (
+	Blueprint, render_template,
+	request, current_app,
+	session, redirect, url_for
+)
 
 from database.operations import select
 from database.sql_provider import SQLProvider
@@ -17,20 +21,41 @@ provider = SQLProvider(os.path.join(os.path.dirname(__file__), 'sql'))
 
 @blueprint_market.route('/', methods=['GET', 'POST'])
 def market_index():
+	db_config = current_app.config['db_config']
+
 	if request.method == 'GET':
-		category = request.args.get('category', None)
-		if category:
-			min_price = request.args.get('price-range', 0)
-			sql = provider.get('items_from_category.sql', category=category, min_price=min_price)
+		category = request.args.get('category', 'all')
+		if category != 'all':
+			sql = provider.get('items_from_category.sql', category=category)
 		else:
 			sql = provider.get('all_items.sql')
-		items = select(current_app.config['db_config'], sql)
-		return render_template('market/index.html', items=items)
+
+		items = select(db_config, sql)
+		basket_items = session.get('basket', [])
+		return render_template('market/index.html', items=items, basket_items=basket_items)
 	else:
-		if 'basket' in session:
-			basket_count = session['basket']
-			basket_count += 1
-			session['basket'] = basket_count
-		else:
-			session['basket'] = 1
-		return str(session.get('basket', 0))
+		item_id = request.form['item_id']
+		sql = provider.get('item_description.sql', item_id=item_id)
+		item_description = select(db_config, sql)
+
+		if not item_description:
+			return render_template('market/item_missing.html')
+
+		item_description = item_description[0]
+		curr_basket = session.get('basket', [])
+		curr_basket.append({
+			'name': item_description['name'],
+			'price': item_description['price'],
+			'cnt': 1
+		})
+		session['basket'] = curr_basket
+		session.permanent = True
+		print(url_for('blueprint_market.market_index'))
+		return redirect(url_for('blueprint_market.market_index'))
+
+
+@blueprint_market.route('/clear-basket')
+def clear_basket():
+	if 'basket' in session:
+		session.pop('basket')
+	return redirect(url_for('blueprint_market.market_index'))

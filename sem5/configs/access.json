@@ -1,11 +1,12 @@
 {
-  "group1": [
-    "blueprint_report",
-    "blueprint_basket"
+  "typical": [
+    "blueprint_report"
   ],
   "admin": [
-    "blueprint_basket",
-    "blueprint_report",
-    "blueprint_report.start_report"
+    "blueprint_market",
+    "blueprint_report"
+  ],
+  "external": [
+    "blueprint_market"
   ]
 }

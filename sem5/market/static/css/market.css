@@ -1,11 +1,6 @@
 #filters {
-    border-style: solid;
-    border-color: black;
-    max-height: 200px;
-}
-
-.price-range-container {
-    margin: 10px;
+    padding: 16px;
+    max-height: 150px;
 }
 
 .select-category-container {
@@ -22,6 +17,20 @@
     height: 180px;
     background-color: #A0A0A0;
     text-align: center;
+    margin-top: 16px;
+}
+
+.basket-item {
+    width: 200px;
+    background-color: #A0A0A0;
     margin: 10px;
-    float: left;
+    padding: 10px;
+}
+
+.wrapper {
+  display: grid;
+  grid-gap: 1px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  justify-items: center;
+  padding-bottom: 16px;
 }

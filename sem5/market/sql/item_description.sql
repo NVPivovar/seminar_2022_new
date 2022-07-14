@@ -4,5 +4,4 @@ select
     price
 from market_items
 where 1
-    and category="$category"
-order by name;
+    and item_id='$item_id'

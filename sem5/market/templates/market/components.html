@@ -1,19 +1,13 @@
 {% macro render_filter() %}
 <div>
     <form id="filter-form">
-        <div class="price-range-container">
-            <input type="range" min="0" max="10000" name="price-range" value="0" id="priceRange">
-            <br>
-            <span>Цена от: </span>
-            <span id="priceValue"></span>
-        </div>
         <div class="select-category-container">
             <label for="categories">Фильтр по категориям</label>
             <div>
                 <select id="categories" form="filter-form" name="category">
+                    <option value="all">Все</option>
                     <option value="clothes">Одежда</option>
-                    <option value="shoes">Обувь</option>
-                    <option value="accessories">Аксессуары</option>
+                    <option value="food">Еда</option>
                 </select>
             </div>
         </div>
@@ -24,16 +18,31 @@
 
 
 {% macro render_content(items) %}
-<div>
+<div class="wrapper box">
     {% for item in items %}
     <div class="item">
         <div>
             <div>{{ item["name"] }}</div>
             <div>{{ item["price"] }}</div>
-            <div>
-                <input type="hidden" name="item-id" class="item-id" value="{{ item['item_id'] }}">
-                <input type="submit" value="Купить" class="buy-button">
-            </div>
+            <form action="" method="post">
+                <input type="hidden" name="item_id" value="{{ item['item_id'] }}">
+                <input type="submit" value="Купить">
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endmacro %}
+
+
+{% macro render_basket(items) %}
+<div>
+    {% for item in items %}
+    <div class="basket-item">
+        <div>
+            <div><span>Нзавание: </span>{{ item["name"] }}</div>
+            <div><span>цена: </span>{{ item["price"] }}</div>
+            <div><span>штук: </span>{{ item["cnt"] }}</div>
         </div>
     </div>
     {% endfor %}
