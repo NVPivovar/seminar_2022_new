@@ -1,3 +1,6 @@
+import time
+import random
+
 from typing import List
 
 from .connection import UseDatabase
@@ -11,6 +14,7 @@ def select(db_config: dict, sql: str) -> List:
             raise ValueError('Курсор не создан')
 
         cursor.execute(sql)
+        time.sleep(random.randint(5, 10))
         schema = [column[0] for column in cursor.description]
 
         for row in cursor.fetchall():

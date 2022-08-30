@@ -24,12 +24,7 @@ def market_index():
 	db_config = current_app.config['db_config']
 
 	if request.method == 'GET':
-		category = request.args.get('category', 'all')
-		if category != 'all':
-			sql = provider.get('items_from_category.sql', category=category)
-		else:
-			sql = provider.get('all_items.sql')
-
+		sql = provider.get('all_items.sql')
 		items = select(db_config, sql)
 		basket_items = session.get('basket', [])
 		return render_template('market/index.html', items=items, basket_items=basket_items)
@@ -42,15 +37,19 @@ def market_index():
 			return render_template('market/item_missing.html')
 
 		item_description = item_description[0]
-		curr_basket = session.get('basket', [])
-		curr_basket.append({
-			'name': item_description['name'],
-			'price': item_description['price'],
-			'cnt': 1
-		})
+		curr_basket = session.get('basket', {})
+
+		if item_id in curr_basket:
+			curr_basket[item_id]['cnt'] = curr_basket[item_id]['cnt'] + 1
+		else:
+			curr_basket[item_id] = {
+				'name': item_description['name'],
+				'price': item_description['price'],
+				'cnt': 1
+			}
 		session['basket'] = curr_basket
 		session.permanent = True
-		print(url_for('blueprint_market.market_index'))
+
 		return redirect(url_for('blueprint_market.market_index'))
 
 
